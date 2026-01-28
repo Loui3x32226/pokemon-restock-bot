@@ -50,6 +50,7 @@ send_discord("🤖 Pokémon Center bot running (clean stop-drop enabled).")
 
 
 while True:
+    print("Bot alive - checking stock...")
     updated = False
 
     for product_name, url in PRODUCTS.items():
@@ -85,6 +86,7 @@ while True:
             json.dump(last_status, f, indent=2)
 
     time.sleep(CHECK_INTERVAL)
+
 
 
 
