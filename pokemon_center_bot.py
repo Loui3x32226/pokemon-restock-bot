@@ -53,23 +53,23 @@ while True:
     print("Bot alive - checking stock...")
     updated = False
 
-    for product_name, url in PRODUCTS.items():
-try:
-    response = requests.get(url, headers=HEADERS, timeout=15)
-    text = response.text.lower()
+for product_name, url in PRODUCTS.items():
+    try:
+        response = requests.get(url, headers=HEADERS, timeout=15)
+        text = response.text.lower()
 
-    if "out of stock" in text or "sold out" in text:
-        current_status = "OUT_OF_STOCK"
-    else:
-        current_status = "IN_STOCK"
+        if "out of stock" in text or "sold out" in text:
+            current_status = "OUT_OF_STOCK"
+        else:
+            current_status = "IN_STOCK"
 
-except requests.exceptions.Timeout:
-    print(f"Timeout checking {product_name}, will retry next loop.")
-    continue
+    except requests.exceptions.Timeout:
+        print(f"Timeout checking {product_name}, will retry next loop.")
+        continue
 
-except Exception as e:
-    print(f"Error checking {product_name}: {e}")
-    continue
+    except Exception as e:
+        print(f"Error checking {product_name}: {e}")
+        continue
 
 
             previous_status = last_status.get(product_name)
@@ -95,6 +95,7 @@ except Exception as e:
             json.dump(last_status, f, indent=2)
 
     time.sleep(CHECK_INTERVAL)
+
 
 
 
