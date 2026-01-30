@@ -63,38 +63,31 @@ for product_name, url in PRODUCTS.items():
         else:
             current_status = "IN_STOCK"
 
-    except requests.exceptions.Timeout:
-        print(f"Timeout checking {product_name}, will retry next loop.")
-        continue
-
-    except Exception as e:
-        print(f"Error checking {product_name}: {e}")
-        continue
-
-
         previous_status = last_status.get(product_name)
 
-            # 🔔 Only alert on OUT → IN
+        # 🔔 Only alert on OUT → IN
         if previous_status == "OUT_OF_STOCK" and current_status == "IN_STOCK":
-                send_discord(
-                    "🚨 **RESTOCK ALERT!** 🚨\n"
-                    f"🛒 **{product_name}**\n"
-                    f"{url}"
-                )
+            send_discord(
+                "🚨 **RESTOCK ALERT!** 🚨\n"
+                f"🛒 **{product_name}**\n"
+                f"{url}"
+            )
 
-            if previous_status != current_status:
-                last_status[product_name] = current_status
-                updated = True
+        if previous_status != current_status:
+            last_status[product_name] = current_status
+            updated = True
 
-        except Exception as e:
-            send_discord(f"⚠️ Error checking {product_name}: {e}")
+    except Exception as e:
+        send_discord(f"⚠️ Error checking {product_name}: {e}")
 
-    # 💾 Save state only if something changed
-    if updated:
-        with open(STATUS_FILE, "w") as f:
-            json.dump(last_status, f, indent=2)
+# 💾 Save state only if something changed
+if updated:
+    with open(STATUS_FILE, "w") as f:
+        json.dump(last_status, f, indent=2)
 
-    time.sleep(CHECK_INTERVAL)
+time.sleep(CHECK_INTERVAL)
+
+
 
 
 
