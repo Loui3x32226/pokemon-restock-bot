@@ -72,10 +72,10 @@ for product_name, url in PRODUCTS.items():
         continue
 
 
-            previous_status = last_status.get(product_name)
+        previous_status = last_status.get(product_name)
 
             # 🔔 Only alert on OUT → IN
-            if previous_status == "OUT_OF_STOCK" and current_status == "IN_STOCK":
+        if previous_status == "OUT_OF_STOCK" and current_status == "IN_STOCK":
                 send_discord(
                     "🚨 **RESTOCK ALERT!** 🚨\n"
                     f"🛒 **{product_name}**\n"
@@ -95,6 +95,7 @@ for product_name, url in PRODUCTS.items():
             json.dump(last_status, f, indent=2)
 
     time.sleep(CHECK_INTERVAL)
+
 
 
 
